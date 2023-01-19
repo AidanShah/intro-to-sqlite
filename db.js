@@ -1,6 +1,7 @@
 //-----------------------------
 //#region Database Connection
 //-----------------------------
+
 const path = require("path");
 const sqlite = require("sqlite3").verbose();
 const dbFile = path.join(__dirname, "foo.db");
@@ -17,6 +18,7 @@ const db = new sqlite.Database(dbFile, (error) => {
 /**
  * Gets a single user by id
  */
+
 const getUserById = (request, response) => {
   // Parse the id to generate a SQLite query
   const id = parseInt(request.params.id);
@@ -41,12 +43,141 @@ const getUserById = (request, response) => {
   });
 };
 
+const getUserTest = (request, response) => {
+  // Parse the id to generate a SQLite query
+  const query = `SELECT * FROM user WHERE id = 1`;
+  // db.get will replace all ? in query sequentially with
+  // items from the array passed as the second parameter
+  // and then run the callback function passed as the third param
+  // What does the callback function do?
+  db.get(query, (error, result) => {
+    if (error) {
+      console.error(error.message);
+      response.status(400).json({ error: error.message });
+      return;
+    }
+    // If nothing is returned, then result will be undefined
+    if (result) {
+      console.log(result)
+      response.json(result);
+    } else {
+      response.sendStatus(404);
+    }
+  });
+};
+
+
+
 // ----- FILL IN BELOW -----
 // Write and export the rest of the functions needed by index.js!
 
 //#endregion Routes
+const getAllUsers = (request, response) => {
+  // Parse the id to generate a SQLite query]
+  const query = `SELECT * FROM user`;
+
+  // db.get will replace all ? in query sequentially with
+  // items from the array passed as the second parameter
+  // and then run the callback function passed as the third param
+  // What does the callback function do?
+  db.get(query, (error, result) => {
+    if (error) {
+      console.error(error.message);
+      response.status(400).json({ error: error.message });
+      return;
+    }
+    // If nothing is returned, then result will be undefined
+    if (result) {
+      response.json(result);
+    } else {
+      response.sendStatus(404);
+    }
+  });
+};
+
+const createUser = (request, response) => {
+  // Parse the id to generate a SQLite query]
+  const user = parseString(request.params.name);
+  const seq = parseInt(request.params.seq);
+  const query = `INSERT INTO user (user, seq) Values = (?,?)`;
+
+  // db.get will replace all ? in query sequentially with
+  // items from the array passed as the second parameter
+  // and then run the callback function passed as the third param
+  // What does the callback function do?
+  db.get(query, [user,seq], (error, result) => {
+    if (error) {
+      console.error(error.message);
+      response.status(400).json({ error: error.message });
+      return;
+    }
+    // If nothing is returned, then result will be undefined
+    if (result) {
+      response.json(result);
+    } else {
+      response.sendStatus(404);
+    }
+  });
+};
+
+// Update a user's name, given an id
+
+const updateUser = (request, response) => {
+  // Parse the id to generate a SQLite query]
+  const id = parseInt(request.params.id);
+  const user = parseString(request.params.name);
+  const query = `UPDATE user SET user = ? WHERE id = ?;`;
+
+  // db.get will replace all ? in query sequentially with
+  // items from the array passed as the second parameter
+  // and then run the callback function passed as the third param
+  // What does the callback function do?
+  db.get(query, [user,id], (error, result) => {
+    if (error) {
+      console.error(error.message);
+      response.status(400).json({ error: error.message });
+      return;
+    }
+    // If nothing is returned, then result will be undefined
+    if (result) {
+      response.json(result);
+    } else {
+      response.sendStatus(404);
+    }
+  });
+};
+
+// Delete a user by id
+
+const deleteUserById = (request, response) => {
+  // Parse the id to generate a SQLite query
+  const id = parseInt(request.params.id);
+  const query = `Delete FROM user WHERE id = ?`;
+
+  // db.get will replace all ? in query sequentially with
+  // items from the array passed as the second parameter
+  // and then run the callback function passed as the third param
+  // What does the callback function do?
+  db.get(query, (error, result) => {
+    if (error) {
+      console.error(error.message);
+      response.status(400).json({ error: error.message });
+      return;
+    }
+    // If nothing is returned, then result will be undefined
+    if (result) {
+      response.json(result);
+    } else {
+      response.sendStatus(404);
+    }
+  });
+};
 
 // This allows `index.js` to use functions defined in this file.
 module.exports = {
   getUserById,
+  getAllUsers,
+  createUser,
+  deleteUserById,
+  getUserTest,
 };
