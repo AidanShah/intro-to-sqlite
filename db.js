@@ -97,15 +97,15 @@ const getAllUsers = (request, response) => {
 
 const createUser = (request, response) => {
   // Parse the id to generate a SQLite query]
-  const user = toString(request.params.name);
-  const seq = parseInt(request.params.seq);
-  const query = `INSERT INTO user (user) Values = (?)`;
+  const id = parseInt(request.params.id);
+  const name = toString(request.params.name);
+  const query = `INSERT INTO user (id,name) Values  (?,?)`;
 
   // db.get will replace all ? in query sequentially with
   // items from the array passed as the second parameter
   // and then run the callback function passed as the third param
   // What does the callback function do?
-  db.get(query, [user], (error, result) => {
+  db.get(query, [id,name], (error, result) => {
     if (error) {
       console.error(error.message);
       response.status(400).json({ error: error.message });
@@ -125,14 +125,14 @@ const createUser = (request, response) => {
 const updateUser = (request, response) => {
   // Parse the id to generate a SQLite query]
   const id = parseInt(request.params.id);
-  const user = toString(request.params.name);
-  const query = `UPDATE user SET user = ? WHERE id = ?;`;
+  const name = toString(request.params.name);
+  const query = `UPDATE user SET name = ? WHERE id = ?;`;
 
   // db.get will replace all ? in query sequentially with
   // items from the array passed as the second parameter
   // and then run the callback function passed as the third param
   // What does the callback function do?
-  db.get(query, [user,id], (error, result) => {
+  db.get(query, [name,id], (error, result) => {
     if (error) {
       console.error(error.message);
       response.status(400).json({ error: error.message });

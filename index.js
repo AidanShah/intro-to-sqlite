@@ -51,11 +51,11 @@ app.get("/user/:id", db.getUserById)
 // Get all users
 app.get("/users", db.getAllUsers)
 // Create a new user
-app.get("/create/:user",
+app.get("/create/:id/:name",
   db.createUser)
 // Update a user's name, given an idi
 
-app.get("/update/:user/:id", db.updateUser);
+app.get("/update/:name/:id", db.updateUser);
 // Delete a user by id
 app.get("/delete/:id", db.deleteUserById);
 //#endregion Database Routes
