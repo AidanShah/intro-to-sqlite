@@ -43,30 +43,21 @@ app.get("/", (req, res) => {
 });
 
 // This endpoint allows a client to get a single user by id
-app.get("/user/:id", (req, res) => {
-  res.json(db.getUserById(req, res));
-});
+app.get("/user/:id", db.getUserById)
 
 // ------ FILL IN BELOW -------
 // Write endpoints that allow a client to:
 
 // Get all users
-app.get("/users", (req, res) => {
-  res.json(db.getAllUsers(req, res));
-});
+app.get("/users", db.getAllUsers)
 // Create a new user
-app.get("/create/:user&seq", (req, res) => {
-  res.json(db.createUser(req, res));
-});
+app.get("/create/:user&seq",
+  db.createUser)
 // Update a user's name, given an idi
 
-app.get("/update/:user", (req, res) => {
-  res.json(db.updateUser(req, res));
-});
+app.get("/update/:user", db.updateUser);
 // Delete a user by id
-app.get("/delete/:id", (req, res) => {
-  res.json(db.deleteUserById(req, res));
-});
+app.get("/delete/:id", db.deleteUserById);
 //#endregion Database Routes
 
 //-----------------------------
