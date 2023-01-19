@@ -19,7 +19,7 @@ const db = new sqlite.Database(dbFile, (error) => {
  * Gets a single user by id
  */
 
-const getUserById = (request, response) => {
+ const getUserById = (request, response) => {
   // Parse the id to generate a SQLite query
   const id = parseInt(request.params.id);
   const query = `SELECT * FROM user WHERE id = ?`;
@@ -97,15 +97,15 @@ const getAllUsers = (request, response) => {
 
 const createUser = (request, response) => {
   // Parse the id to generate a SQLite query]
-  const user = parseString(request.params.name);
+  const user = toString(request.params.name);
   const seq = parseInt(request.params.seq);
-  const query = `INSERT INTO user (user, seq) Values = (?,?)`;
+  const query = `INSERT INTO user (user) Values = (?)`;
 
   // db.get will replace all ? in query sequentially with
   // items from the array passed as the second parameter
   // and then run the callback function passed as the third param
   // What does the callback function do?
-  db.get(query, [user,seq], (error, result) => {
+  db.get(query, [user], (error, result) => {
     if (error) {
       console.error(error.message);
       response.status(400).json({ error: error.message });
@@ -125,7 +125,7 @@ const createUser = (request, response) => {
 const updateUser = (request, response) => {
   // Parse the id to generate a SQLite query]
   const id = parseInt(request.params.id);
-  const user = parseString(request.params.name);
+  const user = toString(request.params.name);
   const query = `UPDATE user SET user = ? WHERE id = ?;`;
 
   // db.get will replace all ? in query sequentially with
@@ -158,7 +158,7 @@ const deleteUserById = (request, response) => {
   // items from the array passed as the second parameter
   // and then run the callback function passed as the third param
   // What does the callback function do?
-  db.get(query, (error, result) => {
+  db.get(query, [id], (error, result) => {
     if (error) {
       console.error(error.message);
       response.status(400).json({ error: error.message });
@@ -178,6 +178,7 @@ module.exports = {
   getUserById,
   getAllUsers,
   createUser,
+  updateUser,
   deleteUserById,
   getUserTest,
 };
